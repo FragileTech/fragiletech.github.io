@@ -1,0 +1,67 @@
+format: jb-book
+root: intro
+parts:
+  - caption: Part I - Foundations
+    chapters:
+    - file: part1_foundations/definitions
+    - file: part1_foundations/control_loop
+
+  - caption: Part II - The Sieve (Runtime Safety)
+    chapters:
+    - file: part2_sieve/diagnostics
+    - file: part2_sieve/limits_barriers
+    - file: part2_sieve/failures_interventions
+    - file: part2_sieve/approximations
+
+  - caption: Part III - Implementation Architecture
+    chapters:
+    - file: part3_architecture/compute_tiers
+    - file: part3_architecture/disentangled_vae
+
+  - caption: Part IV - Control & Belief
+    chapters:
+    - file: part4_control/exploration
+    - file: part4_control/belief_dynamics
+    - file: part4_control/coupling_window
+
+  - caption: Part V - Geometric Dynamics
+    chapters:
+    - file: part5_geometry/metric_law
+    - file: part5_geometry/wfr_geometry
+    - file: part5_geometry/holographic_gen
+    - file: part5_geometry/equations_motion
+
+  - caption: Part VI - Holography & Field Theory
+    chapters:
+    - file: part6_fields/boundary_interface
+    - file: part6_fields/reward_field
+    - file: part6_fields/info_bound
+
+  - caption: Part VII - Cognitive Extensions
+    chapters:
+    - file: part7_cognition/supervised_topo
+    - file: part7_cognition/governor
+    - file: part7_cognition/memory_retrieval
+    - file: part7_cognition/ontology
+    - file: part7_cognition/metabolism
+    - file: part7_cognition/causality
+    - file: part7_cognition/standard_model
+    - file: part7_cognition/metabolic_transducer
+    - file: part7_cognition/intersubjective_metric
+
+  - caption: Part VIII - Multi-Agent Gauge Theory
+    chapters:
+    - file: part8_multiagent/gauge_theory
+
+  - caption: Conclusion
+    chapters:
+    - file: conclusions
+
+  - caption: Appendices
+    chapters:
+    - file: appendices/derivations
+    - file: appendices/parameters
+    - file: appendices/wfr_tensor
+    - file: appendices/faq
+    - file: appendices/proofs
+    - file: appendices/parameter_sieve

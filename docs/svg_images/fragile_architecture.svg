@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 680" width="900" height="680">
+  <title>The Fragile Agent Core Architecture</title>
+  <desc>Architecture diagram showing the four-component tuple: A = (Split VQ-VAE Shutter, World Model, Critic, Policy)</desc>
+
+  <!-- Definitions: Arrow markers and gradients -->
+  <defs>
+    <!-- Standard arrow marker -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1F2937"/>
+    </marker>
+    <!-- Amber arrow for reward signal -->
+    <marker id="arrowhead-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#F59E0B"/>
+    </marker>
+    <!-- Dashed pattern for environment loop -->
+    <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6B7280"/>
+    </marker>
+    <!-- Subtle gradient for component backgrounds -->
+    <linearGradient id="componentGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F3F4F6;stop-opacity:1" />
+    </linearGradient>
+    <!-- Shutter gradient (blue tint) -->
+    <linearGradient id="shutterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#EFF6FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DBEAFE;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="680" fill="#FAFAFA"/>
+
+  <!-- Title -->
+  <g id="title">
+    <text x="450" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="#1F2937" text-anchor="middle">The Fragile Agent Core Architecture</text>
+    <text x="450" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#6B7280" text-anchor="middle" font-style="italic">A = (Shutter, World Model, Critic, Policy)</text>
+  </g>
+
+  <!-- Main agent boundary box -->
+  <rect x="40" y="75" width="820" height="520" rx="12" ry="12" fill="none" stroke="#E5E7EB" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="60" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#9CA3AF" font-weight="500">AGENT BOUNDARY</text>
+
+  <!-- ==================== ROW 1: Observation -> Shutter -> Latent State ==================== -->
+
+  <!-- Observation Input x_t -->
+  <g id="observation">
+    <rect x="60" y="130" width="100" height="70" rx="8" ry="8" fill="url(#componentGradient)" stroke="#1F2937" stroke-width="2"/>
+    <text x="110" y="158" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#1F2937" text-anchor="middle">x</text>
+    <text x="120" y="162" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#1F2937" text-anchor="middle">t</text>
+    <text x="110" y="182" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#6B7280" text-anchor="middle">Observation</text>
+  </g>
+
+  <!-- Arrow: Observation -> Shutter -->
+  <line x1="160" y1="165" x2="210" y2="165" stroke="#1F2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Shutter (VQ-VAE) - Main component -->
+  <g id="shutter">
+    <rect x="220" y="115" width="180" height="100" rx="8" ry="8" fill="url(#shutterGradient)" stroke="#2563EB" stroke-width="2.5"/>
+    <text x="310" y="145" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#1F2937" text-anchor="middle">SHUTTER</text>
+    <text x="310" y="165" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#2563EB" text-anchor="middle">(Split VQ-VAE)</text>
+    <text x="310" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#6B7280" text-anchor="middle" font-style="italic">Encoder + Quantizer</text>
+    <!-- Small visual indicator of quantization -->
+    <rect x="235" y="193" width="6" height="6" fill="#8B5CF6" rx="1"/>
+    <rect x="245" y="193" width="6" height="6" fill="#8B5CF6" rx="1"/>
+    <rect x="255" y="193" width="6" height="6" fill="#8B5CF6" rx="1"/>
+    <rect x="265" y="193" width="6" height="6" fill="#E5E7EB" rx="1"/>
+    <rect x="275" y="193" width="6" height="6" fill="#E5E7EB" rx="1"/>
+    <text x="310" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#9CA3AF" text-anchor="middle">codebook</text>
+  </g>
+
+  <!-- Arrow: Shutter -> Latent State -->
+  <line x1="400" y1="165" x2="455" y2="165" stroke="#1F2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Latent State (K, z_n, z_tex) - Three-tier output -->
+  <g id="latent-state">
+    <!-- Container -->
+    <rect x="465" y="110" width="200" height="110" rx="8" ry="8" fill="#FAFAFA" stroke="#1F2937" stroke-width="2"/>
+    <text x="565" y="132" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1F2937" text-anchor="middle">Latent State</text>
+
+    <!-- K (discrete) -->
+    <rect x="478" y="142" width="55" height="32" rx="4" ry="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="1.5"/>
+    <text x="505" y="163" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#7C3AED" text-anchor="middle">K</text>
+
+    <!-- z_n (nuisance) -->
+    <rect x="538" y="142" width="55" height="32" rx="4" ry="4" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+    <text x="565" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#2563EB" text-anchor="middle">z</text>
+    <text x="575" y="166" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#2563EB" text-anchor="middle">n</text>
+
+    <!-- z_tex (texture) -->
+    <rect x="598" y="142" width="55" height="32" rx="4" ry="4" fill="#F3F4F6" stroke="#9CA3AF" stroke-width="1.5"/>
+    <text x="625" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#6B7280" text-anchor="middle">z</text>
+    <text x="638" y="166" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280" text-anchor="middle">tex</text>
+
+    <!-- Labels below -->
+    <text x="505" y="190" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#7C3AED" text-anchor="middle">discrete</text>
+    <text x="565" y="190" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#3B82F6" text-anchor="middle">nuisance</text>
+    <text x="625" y="190" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#9CA3AF" text-anchor="middle">texture</text>
+
+    <!-- Bracket showing control-relevant portion -->
+    <path d="M478 205 L478 210 L593 210 L593 205" fill="none" stroke="#2563EB" stroke-width="1"/>
+    <text x="535" y="222" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#2563EB" text-anchor="middle">control-relevant</text>
+  </g>
+
+  <!-- ==================== ROW 2: World Model and Critic ==================== -->
+
+  <!-- Vertical connector from Latent State splitting to World Model and Critic -->
+  <g id="latent-split">
+    <!-- Main vertical line down from latent state -->
+    <line x1="535" y1="220" x2="535" y2="270" stroke="#1F2937" stroke-width="2"/>
+    <!-- Split horizontal -->
+    <line x1="340" y1="270" x2="660" y2="270" stroke="#1F2937" stroke-width="2"/>
+    <!-- Down to World Model -->
+    <line x1="340" y1="270" x2="340" y2="295" stroke="#1F2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <!-- Down to Critic -->
+    <line x1="660" y1="270" x2="660" y2="295" stroke="#1F2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+
+  <!-- World Model -->
+  <g id="world-model">
+    <rect x="240" y="305" width="200" height="90" rx="8" ry="8" fill="url(#componentGradient)" stroke="#2563EB" stroke-width="2.5"/>
+    <text x="340" y="335" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#1F2937" text-anchor="middle">WORLD MODEL</text>
+    <text x="340" y="358" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#2563EB" text-anchor="middle" font-style="italic">P(K', z'</text>
+    <text x="340" y="373" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#2563EB" text-anchor="middle" font-style="italic">| K, z, a)</text>
+    <text x="340" y="390" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280" text-anchor="middle">Predictive dynamics</text>
+  </g>
+
+  <!-- Critic -->
+  <g id="critic">
+    <rect x="560" y="305" width="200" height="90" rx="8" ry="8" fill="url(#componentGradient)" stroke="#2563EB" stroke-width="2.5"/>
+    <text x="660" y="335" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#1F2937" text-anchor="middle">CRITIC</text>
+    <text x="660" y="358" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#2563EB" text-anchor="middle" font-style="italic">V(z) via Poisson</text>
+    <text x="660" y="375" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280" text-anchor="middle">Screened Poisson eq.</text>
+    <text x="660" y="390" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280" text-anchor="middle">Value function</text>
+  </g>
+
+  <!-- Reward signal r_t going to Critic -->
+  <g id="reward-signal">
+    <line x1="810" y1="350" x2="765" y2="350" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+    <rect x="780" y="335" width="45" height="30" rx="4" ry="4" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+    <text x="802" y="354" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#D97706" text-anchor="middle">r</text>
+    <text x="812" y="358" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#D97706" text-anchor="middle">t</text>
+  </g>
+
+  <!-- ==================== ROW 3: Policy ==================== -->
+
+  <!-- Connectors from World Model and Critic to Policy -->
+  <g id="to-policy-connectors">
+    <!-- From World Model -->
+    <line x1="340" y1="395" x2="340" y2="430" stroke="#1F2937" stroke-width="2"/>
+    <line x1="340" y1="430" x2="500" y2="430" stroke="#1F2937" stroke-width="2"/>
+    <line x1="500" y1="430" x2="500" y2="455" stroke="#1F2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <!-- From Critic -->
+    <line x1="660" y1="395" x2="660" y2="430" stroke="#1F2937" stroke-width="2"/>
+    <line x1="660" y1="430" x2="500" y2="430" stroke="#1F2937" stroke-width="2"/>
+  </g>
+
+  <!-- Policy -->
+  <g id="policy">
+    <rect x="400" y="465" width="200" height="80" rx="8" ry="8" fill="url(#componentGradient)" stroke="#2563EB" stroke-width="2.5"/>
+    <text x="500" y="495" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#1F2937" text-anchor="middle">POLICY</text>
+    <text x="500" y="515" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#2563EB" text-anchor="middle" font-style="italic">Entropy-regularized</text>
+    <text x="500" y="532" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280" text-anchor="middle">Optimal control</text>
+  </g>
+
+  <!-- ==================== ROW 4: Action Output ==================== -->
+
+  <!-- Action output a_t -->
+  <g id="action">
+    <line x1="500" y1="545" x2="500" y2="575" stroke="#1F2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <rect x="460" y="582" width="80" height="45" rx="8" ry="8" fill="url(#componentGradient)" stroke="#1F2937" stroke-width="2"/>
+    <text x="500" y="607" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#1F2937" text-anchor="middle">a</text>
+    <text x="512" y="613" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#1F2937" text-anchor="middle">t</text>
+    <text x="500" y="622" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280" text-anchor="middle">Action</text>
+  </g>
+
+  <!-- ==================== Environment (outside agent boundary) ==================== -->
+
+  <g id="environment">
+    <!-- Environment box -->
+    <rect x="60" y="610" width="130" height="55" rx="10" ry="10" fill="#F0FDF4" stroke="#10B981" stroke-width="2"/>
+    <text x="125" y="638" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#059669" text-anchor="middle">Environment</text>
+    <text x="125" y="655" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280" text-anchor="middle">External world</text>
+
+    <!-- Action to Environment arrow -->
+    <path d="M460 605 L200 605 L200 632 L195 632" fill="none" stroke="#1F2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Environment feedback loop (dashed) -->
+    <path d="M60 637 L30 637 L30 165 L55 165" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowhead-dashed)"/>
+
+    <!-- Feedback labels -->
+    <text x="25" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#6B7280" text-anchor="middle" transform="rotate(-90, 25, 400)">x</text>
+    <text x="25" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#6B7280" text-anchor="middle" transform="rotate(-90, 25, 420)">t+1</text>
+
+    <!-- Reward feedback to Critic (dashed amber) -->
+    <path d="M190 637 L835 637 L835 350 L830 350" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <text x="870" y="500" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#D97706" text-anchor="middle" transform="rotate(-90, 870, 500)">reward</text>
+  </g>
+
+  <!-- ==================== Legend ==================== -->
+  <g id="legend" transform="translate(690, 115)">
+    <rect x="0" y="0" width="140" height="95" rx="6" ry="6" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="1"/>
+    <text x="70" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#6B7280" text-anchor="middle">LEGEND</text>
+
+    <!-- Data flow -->
+    <line x1="15" y1="35" x2="45" y2="35" stroke="#1F2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="55" y="39" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280">Data flow</text>
+
+    <!-- Reward -->
+    <line x1="15" y1="55" x2="45" y2="55" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+    <text x="55" y="59" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280">Reward</text>
+
+    <!-- Feedback -->
+    <line x1="15" y1="75" x2="45" y2="75" stroke="#6B7280" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <text x="55" y="79" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6B7280">Feedback</text>
+  </g>
+
+</svg>
